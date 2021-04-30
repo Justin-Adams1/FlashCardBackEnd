@@ -1,21 +1,22 @@
-const { Card, validate } = require('../models/card');
+const { Card, validateCard } = require('../models/card');
+const { Collection, validateCollection } = require('../models/collection')
 const express = require("express");
 const router = express.Router();
 
-// router.post("/", async (req, res) => {
-//   try {
-//     const { error } = validate(req.body);
-//     if (error) return res.status(400).send(error);
-//     const card = new Card({
-//       name: req.body.name,
-//       cards: req.body.card
-//     });
-//     await card.save();
-//     return res.send(card);
-//   } catch (ex) {
-//     return res.status(500).send(`Internal Server Error: ${ex}`);
-//   }
-// });
+router.post("/", async (req, res) => {
+  try {
+    const { error } = validateCollection(req.body);
+    if (error) return res.status(400).send(error);
+    const collection = new Collection({
+      name: req.body.name,
+      cards: [],
+    });
+    const awaitConst = await collection.save();
+    return res.send(awaitConst);
+  } catch (ex) {
+    return res.status(500).send(`Internal Server Error: ${ex}`);
+  }
+});
 
 router.get('/', async (req, res) => {
     try {

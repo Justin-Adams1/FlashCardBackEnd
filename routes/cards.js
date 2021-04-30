@@ -11,10 +11,14 @@ router.post('/:collectionId/:cardId', async (req, res) => { // posts a new card 
         const card = await Card.findById(req.params.cardId);
         if (!card) return res.status(400).send(`the card with id: "${req.params.cardId}" does not exist`);
 
-        collection.card.push(card);
+        collection.cards.push({
+            heroName: req.body.heroName,
+            strength: req.body.strength,
+            weakness: req.body.weakness
+        });
 
         await collection.save();
-        return res.send(collection.cardCollection);
+        return res.send(collection.cards);
     } catch (ex) {
         return res.status(500).send(`Internal Server Error: ${ex}`);
     }
@@ -28,13 +32,13 @@ router.put('/:collectionId/:cardId', async (req, res) => { // amends a card in a
     const collection = await Collection.findById(req.params.collectionId);
     if (!collection) return res.status(400).send(`The collection with id "${req.params.userId}" does not exist.`);
 
-    const card = collection.cardCollection.id(req.params.cardId);
-    if (!cards) return res.status(400).send(`The card with id "${req.params.productId}" is not in this collection.`);
-        cards.name = req.body.name;
-        cards.strength = req.body.strength;
-        cards.weakness = req.body.weakness;
+    const card = collection.card.id(req.params.cardId);
+    if (!card) return res.status(400).send(`The card with id "${req.params.productId}" is not in this collection.`);
+        card.heroName = req.body.heroName;
+        card.strength = req.body.strength;
+        card.weakness = req.body.weakness;
     await collection.save();
-    return res.send(cards);
+    return res.send(card);
     } catch (ex) {
     return res.status(500).send(`Internal Server Error: ${ex}`);
     }
@@ -45,11 +49,11 @@ router.delete('/:collectionId/:cardId', async (req, res) => { // deletes a card 
     const collection = await Collection.findById(req.params.collectionId);
     if (!collection) return res.status(400).send(`The collection with id "${req.params.userId}" does not exist.`);
 
-    let cards = collection.cardCollection.id(req.params.cardId);
+    let card = collection.card.id(req.params.cardId);
     if (!cards) return res.status(400).send(`The card with id "${req.params.productId}" is not in this collection`);
-    cards = await cards.remove();
+    cards = await card.remove();
     await collection.save();
-    return res.send(cards);
+    return res.send(card);
     } catch (ex) {
     return res.status(500).send(`Internal Server Error: ${ex}`);
     }
