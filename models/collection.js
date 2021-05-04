@@ -11,7 +11,7 @@ const Collection = mongoose.model('Collection', collectionSchema);
 
 function validateCollection(collection) {
     const schema = Joi.object({
-        name: Joi.string().min(2).max(50).required()
+        name: Joi.string().min(2).max(75).required(),
     });
     return schema.validate(collection);
 }

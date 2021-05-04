@@ -5,7 +5,6 @@ const cardSchema = new mongoose.Schema({
     heroName: { type: String, required: true, minlength: 2, maxlength: 255 },
     strength:  { type: String, required: true, minlength: 5, maxlength: 50  },
     weakness:  { type: String, required: true, minlength: 5, maxlength: 50 },
-    // dateModified:  { type: Date, default: Date.now },
 });
 
 const Card = mongoose.model('Card', cardSchema);
@@ -15,7 +14,6 @@ function validateCard(card) {
         heroName: Joi.string().min(2).max(50).required(),
         strength: Joi.string().min(2).max(50).required(),
         weakness: Joi.string().min(2).max(50).required(),
-        // dateModified:  -- try to get to work
     });
     return schema.validate(card);
    }
