@@ -69,9 +69,9 @@ router.post('/:collectionId/', async (req, res) => { // posts a new card into a 
         if (!collection) return res.status(400).send(`The collection with id: "${req.params.collectionId}" does not exist;`);
 
         collection.cards.push({
-            heroName: req.body.heroName,
-            strength: req.body.strength,
-            weakness: req.body.weakness
+            title: req.body.title,
+            definitionOne: req.body.definitionOne,
+            definitionTwo: req.body.definitionTwo
         });
 
         await collection.save();
@@ -91,9 +91,9 @@ router.put('/:collectionId/:cardId', async (req, res) => { // amends a card in a
 
     const card = collection.cards.id(req.params.cardId);
     if (!card) return res.status(400).send(`The card with id "${req.params.cardId}" is not in this collection.`);
-        card.heroName = req.body.heroName;
-        card.strength = req.body.strength;
-        card.weakness = req.body.weakness;
+        card.title = req.body.title;
+        card.definitionOne = req.body.definitionOne;
+        card.definitionTwo = req.body.definitionTwo;
     await collection.save();
     return res.send(card);
     } catch (ex) {
